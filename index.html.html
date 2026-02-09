@@ -2,198 +2,61 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل الحيرة - وين نروح؟</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>وين نروح؟</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #6d4c41; 
-            --secondary-color: #e67e22;
-            --bg-color: #f9f9f9;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        header {
-            background-color: white;
-            width: 100%;
-            text-align: center;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 500px;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .mode-selector {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .btn-mode {
-            padding: 12px 35px;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .btn-cafe { background-color: #f0edea; color: var(--primary-color); }
-        .btn-restaurant { background-color: #f0edea; color: var(--secondary-color); }
-
-        .active-cafe { background-color: var(--primary-color) !important; color: white !important; }
-        .active-res { background-color: var(--secondary-color) !important; color: white !important; }
-
-        .alphabet-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .letter-btn {
-            background-color: white;
-            border: none;
-            padding: 18px 0;
-            border-radius: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: 0.2s;
-            color: #333;
-        }
-
-        .letter-btn:active {
-            transform: scale(0.9);
-            background-color: #eee;
-        }
-
-        #results-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-            backdrop-filter: blur(5px);
-        }
-
-        .results-card {
-            background: white;
-            width: 85%;
-            max-width: 350px;
-            padding: 25px;
-            border-radius: 25px;
-            text-align: center;
-            position: relative;
-        }
-
-        .results-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .results-list li {
-            padding: 12px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 19px;
-            color: #444;
-        }
-
-        .results-list li:last-child { border-bottom: none; }
-
-        .close-btn {
-            background-color: #f5f5f5;
-            color: #333;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .coming-soon {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
+        :root { --p: #6d4c41; --s: #e67e22; --bg: #f9f9f9; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; -webkit-tap-highlight-color: transparent; }
+        header { background: white; width: 100%; text-align: center; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .container { width: 90%; max-width: 400px; margin-top: 15px; text-align: center; }
+        .mode-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .btn-mode { padding: 10px 25px; border: none; border-radius: 50px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-cafe { background: #f0edea; color: var(--p); }
+        .btn-res { background: #f0edea; color: var(--s); }
+        .active-cafe { background: var(--p) !important; color: white !important; }
+        .active-res { background: var(--s) !important; color: white !important; }
+        .alphabet-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 5px; }
+        .letter-btn { background: white; border: none; padding: 15px 0; border-radius: 12px; font-size: 18px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #333; cursor: pointer; }
+        #results-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200; backdrop-filter: blur(5px); }
+        .results-card { background: white; width: 85%; max-width: 320px; padding: 25px; border-radius: 25px; text-align: center; }
+        .num-btn { background: #f8f9fa; border: 2px solid #eee; padding: 12px; margin: 8px 0; border-radius: 12px; display: block; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; color: #555; }
+        .num-btn.revealed { background: #fff3e0; border-color: var(--s); color: #333; }
+        .close-btn { background: #eee; color: #333; border: none; padding: 12px 30px; border-radius: 12px; font-weight: bold; margin-top: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
-
-<header>
-    <h2 id="main-title">وين تبي نتقهوى؟ ☕</h2>
-</header>
-
+<header><h3 id="main-title">وش العشاء اليوم؟ 🍔</h3></header>
 <div class="container">
     <div class="mode-selector">
-        <button class="btn-mode btn-cafe active-cafe" onclick="setMode('cafe')">كافيهات</button>
-        <button class="btn-mode btn-restaurant" onclick="setMode('restaurant')">مطاعم</button>
+        <button class="btn-mode btn-res active-res" onclick="setMode('restaurant')">مطاعم</button>
+        <button class="btn-mode btn-cafe" onclick="setMode('cafe')">كافيهات</button>
     </div>
-
-    <div class="alphabet-grid" id="alphabetGrid">
-        </div>
+    <div class="alphabet-grid" id="alphabetGrid"></div>
 </div>
-
 <div id="results-overlay">
     <div class="results-card">
-        <h3 id="selected-letter-title">نتائج حرف</h3>
-        <ul class="results-list" id="placesList"></ul>
+        <h3 id="selected-letter-title"></h3>
+        <div id="numbersList"></div>
         <button class="close-btn" onclick="closeResults()">رجوع</button>
     </div>
 </div>
 
 <script>
-    let currentMode = 'cafe';
+    let currentMode = 'restaurant';
     const letters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
-    
-    // بيانات الكافيهات التي أرسلتها
     const data = {
         cafe: {
             "أ": ["آن", "ابي", "اولقا", "ام دي", "اوجن"],
             "ب": ["بيد", "بوق", "باترن", "باش", "بارد"],
-            "ت": ["تلو", "توين", "تورا"],
-            "ث": ["ثمانين"],
-            "ج": ["جومو", "جوى", "جوار"],
-            "د": ["درب"],
-            "ر": ["ريبل", "راوند", "رتم"],
-            "س": ["سلم", "سمراء", "سورا"],
-            "ف": ["فوزت", "فناء"],
-            "ق": ["قلو", "قدح"],
-            "ك": ["كثب", "كوفيكا", "كنن", "كاميلا"],
-            "م": ["ملت"],
-            "ن": ["ناحية", "نبا", "ندر"],
-            "ه": ["هانم"],
-            "و": ["وجين", "وليف"]
+            "ت": ["تلو", "توين", "تورا"], "ث": ["ثمانين"], "ج": ["جومو", "جوى", "جوار"], "د": ["درب"], 
+            "ر": ["ريبل", "راوند", "رتم"], "س": ["سلم", "سمراء", "سورا"], "ف": ["فوزت", "فناء"], 
+            "ق": ["قلو", "قدح"], "ك": ["كثب", "كوفيكا", "كنن", "كاميلا"], "م": ["ملت"], 
+            "ن": ["ناحية", "نبا", "ندر"], "ه": ["هانم"], "و": ["وجين", "وليف"]
         },
-        restaurant: {} // سيبقى فارغاً كما طلبت
+        restaurant: {
+            "أ": ["انديك", "اتز بي", "ازوري", "اوكنو", "افيكتو", "اربن منؤشة", "ابو العبد", "اتون"]
+        }
     };
 
     function init() {
@@ -203,60 +66,45 @@
             const btn = document.createElement('button');
             btn.className = 'letter-btn';
             btn.innerText = char;
-            btn.onclick = () => showResults(char);
+            btn.onclick = () => showNumbers(char);
             grid.appendChild(btn);
         });
     }
 
     function setMode(mode) {
         currentMode = mode;
-        const cafeBtn = document.querySelector('.btn-cafe');
-        const resBtn = document.querySelector('.btn-restaurant');
-        const title = document.getElementById('main-title');
-
-        if (mode === 'cafe') {
-            cafeBtn.classList.add('active-cafe');
-            resBtn.classList.remove('active-res');
-            title.innerText = "وين تبي نتقهوى؟ ☕";
-        } else {
-            resBtn.classList.add('active-res');
-            cafeBtn.classList.remove('active-cafe');
-            title.innerText = "وش العشاء اليوم؟ 🍔";
-        }
+        document.querySelector('.btn-cafe').classList.toggle('active-cafe', mode === 'cafe');
+        document.querySelector('.btn-res').classList.toggle('active-res', mode === 'restaurant');
+        document.getElementById('main-title').innerText = mode === 'cafe' ? "وين تبي نتقهوى؟ ☕" : "وش العشاء اليوم؟ 🍔";
     }
 
-    function showResults(letter) {
-        const overlay = document.getElementById('results-overlay');
-        const list = document.getElementById('placesList');
+    function showNumbers(letter) {
+        const list = document.getElementById('numbersList');
         const title = document.getElementById('selected-letter-title');
-        
         list.innerHTML = "";
+        const results = data[currentMode][letter] || [];
 
-        if (currentMode === 'restaurant') {
-            title.innerText = "قسم المطاعم";
-            list.innerHTML = "<div class='coming-soon'>🚧</div><li>قريباً.. جاري إضافة المطاعم</li>";
+        if (results.length > 0) {
+            title.innerText = `اختر رقم (حرف ${letter})`;
+            results.forEach((place, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'num-btn';
+                btn.innerText = `خيار رقم ${index + 1}`;
+                btn.onclick = () => {
+                    btn.innerText = place;
+                    btn.classList.add('revealed');
+                };
+                list.appendChild(btn);
+            });
         } else {
-            title.innerText = `كافيهات تبدأ بحرف (${letter})`;
-            const results = data.cafe[letter] || [];
-            if (results.length > 0) {
-                results.forEach(place => {
-                    const li = document.createElement('li');
-                    li.innerText = place;
-                    list.appendChild(li);
-                });
-            } else {
-                list.innerHTML = "<li>لا توجد كافيهات بهذا الحرف حالياً</li>";
-            }
+            title.innerText = "قريباً";
+            list.innerHTML = "<p>🚧 جاري إضافة المواقع لهذا الحرف</p>";
         }
-        overlay.style.display = 'flex';
+        document.getElementById('results-overlay').style.display = 'flex';
     }
 
-    function closeResults() {
-        document.getElementById('results-overlay').style.display = 'none';
-    }
-
+    function closeResults() { document.getElementById('results-overlay').style.display = 'none'; }
     init();
 </script>
-
 </body>
 </html>
