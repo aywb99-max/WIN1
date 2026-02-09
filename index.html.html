@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>دليل الحيرة</title>
+    <title>دليل الحيرة المطوّر</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --p: #6d4c41; --s: #e67e22; --bg: #f9f9f9; }
@@ -11,7 +11,6 @@
         header { background: white; width: 100%; text-align: center; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
         .container { width: 90%; max-width: 400px; margin-top: 15px; text-align: center; }
         
-        /* تصميم أزرار التبديل */
         .main-selector { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
         .row { display: flex; justify-content: center; gap: 10px; }
         .btn-toggle { padding: 8px 20px; border: 2px solid #eee; border-radius: 50px; font-size: 14px; font-weight: bold; cursor: pointer; background: white; color: #777; transition: 0.3s; }
@@ -23,13 +22,17 @@
         .active-cafe { background: var(--p) !important; color: white !important; }
 
         .alphabet-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 5px; }
-        .letter-btn { background: white; border: none; padding: 15px 0; border-radius: 12px; font-size: 18px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #333; }
+        .letter-btn { background: white; border: none; padding: 15px 0; border-radius: 12px; font-size: 18px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: #333; cursor: pointer; }
         
+        /* وضع الدليل */
+        .guide-container { display: none; text-align: right; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .guide-item { padding: 12px; border-bottom: 1px solid #f0f0f0; font-size: 17px; color: #444; }
+
         #results-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200; backdrop-filter: blur(5px); }
         .results-card { background: white; width: 85%; max-width: 320px; padding: 25px; border-radius: 25px; text-align: center; }
-        .num-btn, .guide-item { background: #f8f9fa; border: 2px solid #eee; padding: 12px; margin: 8px 0; border-radius: 12px; display: block; width: 100%; font-size: 17px; font-weight: bold; color: #444; text-decoration: none; }
+        .num-btn { background: #f8f9fa; border: 2px solid #eee; padding: 12px; margin: 8px 0; border-radius: 12px; display: block; width: 100%; font-size: 17px; font-weight: bold; color: #444; cursor: pointer; }
         .num-btn.revealed { background: #fff3e0; border-color: var(--s); color: #333; }
-        .close-btn { background: #eee; color: #333; border: none; padding: 12px 30px; border-radius: 12px; font-weight: bold; margin-top: 15px; }
+        .close-btn { background: #eee; color: #333; border: none; padding: 12px 30px; border-radius: 12px; font-weight: bold; margin-top: 15px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -39,8 +42,8 @@
 <div class="container">
     <div class="main-selector">
         <div class="row">
-            <button class="btn-toggle active" id="gameMode" onclick="setPlayStyle('game')">🎮 وضع اللعبة</button>
-            <button class="btn-toggle" id="guideMode" onclick="setPlayStyle('guide')">📖 وضع الدليل</button>
+            <button class="btn-toggle active" id="gameModeBtn" onclick="setPlayStyle('game')">🎮 وضع الحيرة</button>
+            <button class="btn-toggle" id="guideModeBtn" onclick="setPlayStyle('guide')">📖 وضع الدليل</button>
         </div>
         <div class="row">
             <button class="btn-mode active-res" id="resBtn" onclick="setCategory('restaurant')">مطاعم</button>
@@ -48,7 +51,9 @@
         </div>
     </div>
 
-    <div class="alphabet-grid" id="alphabetGrid"></div>
+    <div id="alphabetGrid" class="alphabet-grid"></div>
+
+    <div id="guideList" class="guide-container"></div>
 </div>
 
 <div id="results-overlay">
@@ -60,8 +65,8 @@
 </div>
 
 <script>
-    let playStyle = 'game'; // game or guide
-    let category = 'restaurant'; // restaurant or cafe
+    let playStyle = 'game'; 
+    let category = 'restaurant';
     const letters = "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".split("");
     
     const data = {
@@ -76,21 +81,54 @@
     };
 
     function init() {
+        renderAlphabet();
+        if(playStyle === 'guide') renderGuide();
+    }
+
+    function renderAlphabet() {
         const grid = document.getElementById('alphabetGrid');
         grid.innerHTML = "";
         letters.forEach(char => {
             const btn = document.createElement('button');
             btn.className = 'letter-btn';
             btn.innerText = char;
-            btn.onclick = () => showResults(char);
+            btn.onclick = () => showGameResults(char);
             grid.appendChild(btn);
+        });
+    }
+
+    function renderGuide() {
+        const guideList = document.getElementById('guideList');
+        guideList.innerHTML = "";
+        let allPlaces = [];
+        
+        // جمع كل الأماكن في التصنيف المختار
+        Object.values(data[category]).forEach(arr => {
+            allPlaces = allPlaces.concat(arr);
+        });
+
+        // ترتيب أبجدي
+        allPlaces.sort().forEach(place => {
+            const item = document.createElement('div');
+            item.className = 'guide-item';
+            item.innerText = place;
+            guideList.appendChild(item);
         });
     }
 
     function setPlayStyle(style) {
         playStyle = style;
-        document.getElementById('gameMode').classList.toggle('active', style === 'game');
-        document.getElementById('guideMode').classList.toggle('active', style === 'guide');
+        document.getElementById('gameModeBtn').classList.toggle('active', style === 'game');
+        document.getElementById('guideModeBtn').classList.toggle('active', style === 'guide');
+        
+        if (style === 'guide') {
+            document.getElementById('alphabetGrid').style.display = 'none';
+            document.getElementById('guideList').style.display = 'block';
+            renderGuide();
+        } else {
+            document.getElementById('alphabetGrid').style.display = 'grid';
+            document.getElementById('guideList').style.display = 'none';
+        }
     }
 
     function setCategory(cat) {
@@ -98,33 +136,30 @@
         document.getElementById('resBtn').classList.toggle('active-res', cat === 'restaurant');
         document.getElementById('cafeBtn').classList.toggle('active-cafe', cat === 'cafe');
         document.getElementById('main-title').innerText = cat === 'cafe' ? "وين تبي نتقهوى؟ ☕" : "وش العشاء اليوم؟ 🍔";
+        if (playStyle === 'guide') renderGuide();
     }
 
-    function showResults(letter) {
+    function showGameResults(letter) {
         const list = document.getElementById('contentList');
         const title = document.getElementById('overlay-title');
         list.innerHTML = "";
-        const results = data[category][letter] || [];
+        let results = data[category][letter] || [];
 
         if (results.length > 0) {
-            if (playStyle === 'game') {
-                title.innerText = `اختر رقم (حرف ${letter})`;
-                results.forEach((place, index) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'num-btn';
-                    btn.innerText = `خيار رقم ${index + 1}`;
-                    btn.onclick = () => { btn.innerText = place; btn.classList.add('revealed'); };
-                    list.appendChild(btn);
-                });
-            } else {
-                title.innerText = `قائمة حرف ${letter}`;
-                results.forEach(place => {
-                    const item = document.createElement('div');
-                    item.className = 'guide-item';
-                    item.innerText = place;
-                    list.appendChild(item);
-                });
-            }
+            title.innerText = `حرف (${letter}) - عشوائي 🎲`;
+            
+            // خلط الترتيب بشكل عشوائي في كل مرة
+            let shuffled = results.map(value => ({ value, sort: Math.random() }))
+                                  .sort((a, b) => a.sort - b.sort)
+                                  .map(({ value }) => value);
+
+            shuffled.forEach((place, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'num-btn';
+                btn.innerText = `خيار رقم ${index + 1}`;
+                btn.onclick = () => { btn.innerText = place; btn.classList.add('revealed'); };
+                list.appendChild(btn);
+            });
         } else {
             title.innerText = "قريباً";
             list.innerHTML = "<p>🚧 جاري إضافة المواقع</p>";
